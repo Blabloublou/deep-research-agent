@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deep Research Agent</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Deep Research Agent</h1>
+            <p class="subtitle">Your AI research assistant</p>
+        </div>
+
+        <div class="server-status" id="serverStatus">
+            <div class="status-info">
+                <span class="status-indicator" id="statusIndicator">●</span>
+                <span id="statusText">Checking server...</span>
+            </div>
+            <button id="refreshBtn" class="btn-refresh" title="Refresh connection">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="23 4 23 10 17 10"></polyline>
+                    <polyline points="1 20 1 14 7 14"></polyline>
+                    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                </svg>
+            </button>
+        </div>
+
+        <div class="search-section">
+            <div class="options">
+                <label for="agentSelect">Agent</label>
+                <div style="display:flex; gap:8px; align-items:center;">
+                    <select id="agentSelect" style="flex:1;"></select>
+                    <button id="newAgentBtn" class="btn-small btn-icon" type="button" title="New agent">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                    </button>
+                    <button id="editAgentBtn" class="btn-small btn-icon" type="button" title="Edit agent">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                        </svg>
+                    </button>
+                    <button id="deleteAgentBtn" class="btn-small btn-icon" type="button" title="Delete agent">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                            <line x1="10" y1="11" x2="10" y2="17"></line>
+                            <line x1="14" y1="11" x2="14" y2="17"></line>
+                        </svg>
+                    </button>
+                    <button id="viewReportsBtn" class="btn-small btn-icon" type="button" title="View reports">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path>
+                            <path d="M22 12A10 10 0 0 0 12 2v10z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <label for="topicInput">Research topic</label>
+            <textarea 
+                id="topicInput" 
+                placeholder="Ex: Impact of LLMs on software development"
+                rows="3"
+            ></textarea>
+
+            <button id="searchBtn" class="btn-primary" style="margin-top: 16px;" disabled>
+                <span id="btnText" style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="M21 21l-4.35-4.35"></path>
+                    </svg>
+                    Start research
+                </span>
+            </button>
+        </div>
+
+        <div class="progress-section" id="progressSection" style="display: none;">
+            <div class="progress-header">
+                <h3>Research in progress...</h3>
+                <span class="research-id" id="researchId"></span>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <div class="metrics" id="metrics">
+                <div class="metric">
+                    <span class="metric-label">Iteration</span>
+                    <span class="metric-value" id="currentIteration">-</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Sources</span>
+                    <span class="metric-value" id="sourcesFound">0</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Claims</span>
+                    <span class="metric-value" id="claimsExtracted">0</span>
+                </div>
+            </div>
+
+            <div class="status-updates" id="statusUpdates">
+            </div>
+        </div>
+
+        <div class="results-section" id="resultsSection" style="display: none;">
+            <div class="results-header">
+                <h3>Research completed</h3>
+            </div>
+
+            <div class="report-preview" id="reportPreview"></div>
+
+            <button id="newSearchBtn" class="btn-secondary">
+                New search
+            </button>
+        </div>
+
+        <div class="error-section" id="errorSection" style="display: none;">
+            <div class="error-message">
+                <div>
+                    <h4>Error</h4>
+                    <p id="errorText"></p>
+                </div>
+            </div>
+            <button id="retryBtn" class="btn-secondary">Try again</button>
+        </div>
+
+        <div class="modal" id="agentModal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="modalTitle">New Agent</h3>
+                    <button class="modal-close" id="closeModal">×</button>
+                </div>
+                <form id="agentForm">
+                    <div class="form-group">
+                        <label for="agentName">Agent name *</label>
+                        <input type="text" id="agentName" required placeholder="Ex: GPT-4o Creative">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="agentModel">Model *</label>
+                        <select id="agentModel" required>
+                            <option value="gpt-4o">GPT-4o (Recommended)</option>
+                            <option value="gpt-4o-mini">GPT-4o Mini (Fast)</option>
+                            <option value="gpt-4-turbo">GPT-4 Turbo</option>
+                            <option value="gpt-4">GPT-4</option>
+                            <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="agentTemperature">Temperature (0-2)</label>
+                        <input type="number" id="agentTemperature" step="0.1" min="0" max="2" placeholder="0.7">
+                        <small>Leave empty to use default value (0.7)</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="agentMaxTokens">Max Tokens</label>
+                        <input type="number" id="agentMaxTokens" step="100" min="100" placeholder="2000">
+                        <small>Leave empty to use default value</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="agentMaxIterations">Number of iterations</label>
+                        <select id="agentMaxIterations">
+                            <option value="1">1 iteration (Fast)</option>
+                            <option value="2">2 iterations (Standard)</option>
+                            <option value="3">3 iterations (Deep)</option>
+                            <option value="4">4 iterations</option>
+                            <option value="5">5 iterations (Maximum)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" id="cancelAgent">Cancel</button>
+                        <button type="submit" class="btn-primary" id="saveAgent">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="modal" id="reportsModal" style="display: none;">
+            <div class="modal-content modal-large">
+                <div class="modal-header">
+                    <h3 id="reportsModalTitle">Agent reports</h3>
+                    <button class="modal-close" id="closeReportsModal">×</button>
+                </div>
+                <div class="reports-list" id="reportsList">
+                    <p style="text-align:center; color:#6c757d;">Loading...</p>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <div style="width: 100%; text-align: center;">Gratens Baptiste</div>
+        </div>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>
+

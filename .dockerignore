@@ -1,0 +1,35 @@
+# Gradle
+.gradle/
+build/
+!build/libs/*.jar
+
+# IDE
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Environment
+.env
+
+# Git
+.git/
+.gitignore
+
+# Documentation
+*.md
+!README.md
+
+# Reports
+research_reports/
+
+# macOS
+.DS_Store
+
+# Test
+src/test/
+
+# Misc
+gradlew
+gradlew.bat
+
