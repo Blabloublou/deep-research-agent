@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  deep-research-agent:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: deep-research-agent
+    ports:
+      - "8080:8080"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - BRAVE_API_KEY=${BRAVE_API_KEY}
+      - OPENAI_MODEL=${OPENAI_MODEL:-gpt-4o}
+      - MAX_ITERATIONS=${MAX_ITERATIONS:-3}
+      - MAX_SOURCES_PER_QUERY=${MAX_SOURCES_PER_QUERY:-10}
+      - MIN_SOURCE_CREDIBILITY_SCORE=${MIN_SOURCE_CREDIBILITY_SCORE:-0.5}
+    volumes:
+      - ./research_reports:/app/research_reports
+    restart: unless-stopped
+    networks:
+      - research-network
+
+networks:
+  research-network:
+    driver: bridge
+
