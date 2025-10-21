@@ -47,7 +47,6 @@ class ResearchService(
         
         researches[id] = task
         
-        // Launch research in background
         scope.launch {
             try {
                 task.updateState(ResearchState.PLANNING)
@@ -84,6 +83,22 @@ class ResearchService(
                 )
             } else null,
             error = task.error
+        )
+    }
+
+    /**
+     * Get research result including report and metrics.
+     */
+    fun getResult(id: String): ResearchResult? {
+        val task = researches[id] ?: return null
+        return ResearchResult(
+            id = task.id,
+            topic = task.topic,
+            status = task.state,
+            report = task.report,
+            metrics = task.metrics,
+            startTime = task.startTime,
+            endTime = task.endTime
         )
     }
 
