@@ -69,7 +69,7 @@ class SourceEvaluator {
      */
     private fun calculateAuthority(url: String): Double {
         return try {
-            val domain = URL(url).host.lowercase()
+            val domain = java.net.URI(url).host.lowercase()
             val tld = domain.substringAfterLast('.')
             
             var score = 0.5 // Base score

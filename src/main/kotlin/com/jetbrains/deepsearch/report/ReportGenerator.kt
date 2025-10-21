@@ -3,13 +3,10 @@ package com.jetbrains.deepsearch.report
 import com.jetbrains.deepsearch.clients.openai.OpenAIClient
 import com.jetbrains.deepsearch.eval.CrossChecker
 import com.jetbrains.deepsearch.model.*
-import mu.KotlinLogging
 import java.io.File
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
-
-private val logger = KotlinLogging.logger {}
 
 /**
  * Generates comprehensive research reports in Markdown format.
@@ -29,9 +26,7 @@ class ReportGenerator(
         context: ResearchContext,
         startTime: Long,
         endTime: Long
-    ): String {
-        logger.info { "Generating research report for topic: ${context.topic}" }
-        
+    ): String {        
         // Find contradictions
         val contradictions = crossChecker.findContradictions(context.claims)
         
@@ -58,7 +53,6 @@ class ReportGenerator(
             appendFooter()
         }
         
-        logger.info { "Report generated: ${report.length} characters" }
         return report
     }
     
@@ -69,8 +63,6 @@ class ReportGenerator(
         val file = File(outputPath)
         file.parentFile?.mkdirs()
         file.writeText(report)
-        
-        logger.info { "Report exported to: ${file.absolutePath}" }
         return file
     }
     

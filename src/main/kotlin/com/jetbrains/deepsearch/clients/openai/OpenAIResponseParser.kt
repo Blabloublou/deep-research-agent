@@ -31,7 +31,7 @@ object OpenAIResponseParser {
             throw Exception("HTTP $statusCode from OpenAI: ${errorMessage ?: responseBody.take(300)}")
         }
 
-        return try {
+        try {
             val root = json.parseToJsonElement(responseBody).jsonObject
 
             root["choices"]?.let {

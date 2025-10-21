@@ -124,7 +124,7 @@ class ResearchService(
             val totalIterations = agentConfig?.maxIterations ?: request.maxIterations
             task.sendUpdate(UpdateType.STATUS, "Planning research strategy... (5%)")
             
-            var currentProgress = 5
+            var currentProgress: Int
             
             val reportPath = agent.researchWithOverridesWithCallbacks(
                 topic = request.topic,
@@ -140,10 +140,10 @@ class ResearchService(
                 onQuery = { query ->
                     task.sendUpdate(UpdateType.QUERY, query)
                 },
-                onSourceFound = { url, title ->
+                onSourceFound = { _, _ ->
                     task.sourcesFound++
                 },
-                onClaimExtracted = { claim ->
+                onClaimExtracted = { _ ->
                     task.claimsExtracted++
                 },
                 onSynthesis = { iteration ->

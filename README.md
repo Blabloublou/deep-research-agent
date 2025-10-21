@@ -19,7 +19,7 @@ Deep web research agent in Kotlin (Ktor). It plans queries, searches the web, ex
   - **OPENAI_API_KEY** (OpenAI)
   - **BRAVE_API_KEY** (Brave Search API)
 
-### 1) Create a .env file (recommended)
+### 1) Create a .env file from example
 
 ### 2) Start the service
 

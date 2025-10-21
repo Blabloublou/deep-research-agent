@@ -28,7 +28,7 @@ class DeepResearchAgent private constructor(
     private val maxSourcesPerQuery: Int = 10,
     private val minCredibilityScore: Double = 0.5
 ) {
-    private val httpClient: HttpClient = HttpClientFactory.create(enableLogging = false)
+    private val httpClient: HttpClient = HttpClientFactory.create()
     
     private val openAIClient = OpenAIClient(httpClient, openAIApiKey, openAIModel)
     private val searchClient = SearchClient(httpClient, braveApiKey)
@@ -132,7 +132,7 @@ class DeepResearchAgent private constructor(
         fun fromConfig(): DeepResearchAgent {
             val openAIApiKey = ConfigLoader.getRequired("OPENAI_API_KEY")
             val braveApiKey = ConfigLoader.getRequired("BRAVE_API_KEY")
-            val openAIModel = ConfigLoader.get("OPENAI_MODEL", "gpt-4o")!!
+            val openAIModel = ConfigLoader.get("OPENAI_MODEL", "gpt-4o")
             val maxIterations = ConfigLoader.getInt("MAX_ITERATIONS", 3)
             val maxSourcesPerQuery = ConfigLoader.getInt("MAX_SOURCES_PER_QUERY", 10)
             val minCredibilityScore = ConfigLoader.getDouble("MIN_SOURCE_CREDIBILITY_SCORE", 0.5)

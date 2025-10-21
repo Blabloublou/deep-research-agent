@@ -5,7 +5,7 @@ import mu.KotlinLogging
 
 private val logger = KotlinLogging.logger {}
 
-fun main(args: Array<String>) {
+fun main() {
 
     try {
         val agent = DeepResearchAgent.fromConfig()

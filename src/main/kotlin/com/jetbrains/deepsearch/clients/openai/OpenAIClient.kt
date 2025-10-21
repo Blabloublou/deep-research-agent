@@ -69,7 +69,7 @@ class OpenAIClient(
     /**
      * Extracts key claims from source content.
      */
-    suspend fun extractClaims(content: String, sourceUrl: String): String {
+    suspend fun extractClaims(content: String, @Suppress("UNUSED_PARAMETER") sourceUrl: String): String {
         return chatCompletion(
             messages = OpenAIPrompts.extractClaims(content),
             temperature = 0.3

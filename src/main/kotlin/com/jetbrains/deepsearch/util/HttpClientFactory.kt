@@ -14,7 +14,7 @@ import kotlinx.serialization.json.Json
  */
 object HttpClientFactory {
 
-    fun create(enableLogging: Boolean = false): HttpClient {
+    fun create(): HttpClient {
         return HttpClient(CIO) {
             install(ContentNegotiation) {
                 json(Json {

@@ -43,7 +43,6 @@ class IterativeResearcher(
         onSynthesis: suspend (iteration: Int) -> Unit = {}
     ): ResearchContext = coroutineScope {
 
-        val startTime = System.currentTimeMillis()
         val context = ResearchContext(topic = topic, currentIteration = 1)
 
         val plan = researchPlanner.createResearchPlan(topic, maxIterations)
@@ -89,14 +88,7 @@ class IterativeResearcher(
             val gaps = identifyGaps(context)
             context.gaps.clear()
             context.gaps.addAll(gaps)
-
-            logger.info { 
-                "Iteration $iteration complete: ${newSources.size} new sources, " +
-                "${newClaims.size} claims extracted, ${gaps.size} gaps identified" 
-            }
         }
-
-        val duration = System.currentTimeMillis() - startTime
 
         context
     }
@@ -123,7 +115,6 @@ class IterativeResearcher(
                         return@async null
                     }
 
-                    // Evaluate source credibility
                     val publishedDate = parseDate(result.publishedDate)
                     val existingContents = context.sources.map { it.content }
                     
@@ -190,7 +181,6 @@ class IterativeResearcher(
     private fun identifyGaps(context: ResearchContext): List<String> {
         val gaps = mutableListOf<String>()
 
-        // Check for unverified claims
         val unverifiedClaims = context.claims.filter { 
             it.verificationStatus == VerificationStatus.UNVERIFIED 
         }
