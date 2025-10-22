@@ -88,7 +88,8 @@ class CrossChecker(private val openAIClient: OpenAIClient) {
         val overlap = words1.intersect(words2).size
         val total = words1.union(words2).size
 
-        return overlap.toDouble() / total > 0.3 /
+        if (total == 0) return false
+        return overlap.toDouble() / total > 0.3
     }
 
     /**
@@ -121,6 +122,7 @@ class CrossChecker(private val openAIClient: OpenAIClient) {
         val intersection = words1.intersect(words2).size
         val union = words1.union(words2).size
 
+        if (union == 0) return 0.0
         return intersection.toDouble() / union
     }
 
