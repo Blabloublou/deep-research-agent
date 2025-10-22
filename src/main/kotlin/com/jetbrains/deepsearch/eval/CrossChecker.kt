@@ -82,14 +82,13 @@ class CrossChecker(private val openAIClient: OpenAIClient) {
      * Checks if two claims are semantically related.
      */
     private fun areClaimsRelated(claim1: String, claim2: String): Boolean {
-        // Simple heuristic: check for common keywords
         val words1 = claim1.lowercase().split(Regex("\\W+")).filter { it.length > 4 }.toSet()
         val words2 = claim2.lowercase().split(Regex("\\W+")).filter { it.length > 4 }.toSet()
 
         val overlap = words1.intersect(words2).size
         val total = words1.union(words2).size
 
-        return overlap.toDouble() / total > 0.3 // 30% keyword overlap
+        return overlap.toDouble() / total > 0.3 /
     }
 
     /**

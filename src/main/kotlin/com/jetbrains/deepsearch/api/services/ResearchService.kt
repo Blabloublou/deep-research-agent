@@ -117,12 +117,12 @@ class ResearchService(
         val task = researches[id] ?: return
         
         task.updateState(ResearchState.RESEARCHING)
-        task.sendUpdate(UpdateType.STATUS, "Starting deep research on: ${request.topic} (0%)")
+        task.sendUpdate(UpdateType.STATUS, "Starting deep research on: ${request.topic}")
         
         try {
             val agentConfig = request.agentId?.let { agentRepo.findById(it) }
             val totalIterations = agentConfig?.maxIterations ?: request.maxIterations
-            task.sendUpdate(UpdateType.STATUS, "Planning research strategy... (5%)")
+            task.sendUpdate(UpdateType.STATUS, "Planning research strategy... (0%)")
             
             var currentProgress: Int
             

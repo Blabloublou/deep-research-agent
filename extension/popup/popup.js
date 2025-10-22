@@ -466,6 +466,7 @@ async function viewReportDetails(reportId) {
         document.querySelector('.search-section').style.display = 'none';
         
         reportPreview.innerHTML = renderMarkdown(report.report);
+        scrollReportToTop();
     } catch (e) {
         alert('Network error: ' + e.message);
     }
@@ -556,9 +557,13 @@ function addStatusUpdate(message, type = 'status') {
     update.className = `status-update ${type}`;
     update.textContent = message;
     
+    const MAX_EVENTS = 8;
+    while (statusUpdates.children.length >= MAX_EVENTS) {
+        statusUpdates.removeChild(statusUpdates.firstChild);
+    }
+    
     statusUpdates.appendChild(update);
     
-    // Scroll to bottom - using requestAnimationFrame to ensure DOM is updated
     requestAnimationFrame(() => {
         statusUpdates.scrollTop = statusUpdates.scrollHeight;
     });
@@ -613,6 +618,25 @@ function renderMarkdown(markdown) {
         .replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>');
 }
 
+// Ensure the report view starts at the top
+function scrollReportToTop() {
+    try {
+        reportPreview.scrollTop = 0;
+        const rootScrollable = document.querySelector('.popup-content') || document.scrollingElement || document.documentElement || document.body;
+        if (rootScrollable) {
+            rootScrollable.scrollTop = 0;
+        }
+        requestAnimationFrame(() => {
+            reportPreview.scrollTop = 0;
+            if (rootScrollable) rootScrollable.scrollTop = 0;
+            window.scrollTo(0, 0);
+        });
+    } catch (_) {
+        // Fallback
+        window.scrollTo(0, 0);
+    }
+}
+
 // Show error
 function showError(message) {
     errorText.textContent = message;
@@ -647,6 +671,8 @@ function resetUI() {
     
     document.getElementById('sourcesFound').textContent = '0';
     document.getElementById('claimsExtracted').textContent = '0';
+    
+    topicInput.value = '';
     
     currentResearchId = null;
     resetButton();

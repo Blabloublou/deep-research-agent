@@ -23,7 +23,6 @@ object ConfigLoader {
     private fun loadEnvFile() {
         val envFile = File(".env")
         if (envFile.exists()) {
-            logger.info { "Loading configuration from .env file" }
             envFile.readLines()
                 .filter { it.isNotBlank() && !it.trim().startsWith("#") }
                 .forEach { line ->

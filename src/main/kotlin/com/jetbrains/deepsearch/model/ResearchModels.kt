@@ -24,7 +24,7 @@ data class ResearchQuery(
  */
 data class ResearchContext(
     val topic: String,
-    var currentIteration: Int,  // var pour permettre la modification
+    var currentIteration: Int,
     val sources: MutableList<Source> = mutableListOf(),
     val claims: MutableList<Claim> = mutableListOf(),
     val insights: MutableList<String> = mutableListOf(),

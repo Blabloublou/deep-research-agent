@@ -1,17 +1,15 @@
 package com.jetbrains.deepsearch.clients.brave
 
 import kotlinx.coroutines.delay
-import mu.KotlinLogging
 import java.util.concurrent.atomic.AtomicLong
 
-private val logger = KotlinLogging.logger {}
 
 /**
- * Rate limiter to respect API rate limits.
+ * Rate limiter to respect Brevo API rate limits.
  * Thread-safe implementation using atomic operations.
  */
 class SearchRateLimiter(
-    private val minRequestIntervalMs: Long = 1000L
+    private val minRequestIntervalMs: Long = 1000L // 1 second
 ) {
     private val lastRequestTime = AtomicLong(0)
 
@@ -25,7 +23,6 @@ class SearchRateLimiter(
 
         if (timeSinceLastRequest < minRequestIntervalMs) {
             val waitTime = minRequestIntervalMs - timeSinceLastRequest
-            logger.debug { "Rate limiting: waiting ${waitTime}ms before next request" }
             delay(waitTime)
         }
 

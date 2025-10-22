@@ -38,19 +38,15 @@ class ReportGenerator(
             appendLine()
             appendExecutiveSummary(context)
             appendLine()
-            appendThematicAnalysis(context)
-            appendLine()
             appendConsensusPoints(context)
             appendLine()
             if (contradictions.isNotEmpty()) {
                 appendContradictions(contradictions)
                 appendLine()
             }
-            appendResearchMetrics(metrics)
-            appendLine()
             appendSourceList(context.sources)
             appendLine()
-            appendFooter()
+            appendResearchMetrics(metrics)
         }
         
         return report
@@ -67,25 +63,27 @@ class ReportGenerator(
     }
     
     private fun StringBuilder.appendTitle(topic: String) {
-        appendLine("# Deep Research Report: $topic")
-        appendLine()
+        appendLine("# $topic")
         appendLine("*Generated: ${dateFormatter.format(Instant.now())}*")
     }
     
     private fun StringBuilder.appendExecutiveSummary(context: ResearchContext) {
         appendLine("## Executive Summary")
-        appendLine()
         
         val topClaims = context.claims
             .filter { it.verificationStatus == VerificationStatus.VERIFIED || 
                      it.verificationStatus == VerificationStatus.LIKELY_TRUE }
             .sortedByDescending { it.confidence }
-            .take(5)
+            
         
-        if (topClaims.isNotEmpty()) {
-            appendLine("**Key Findings:**")
+        val distinctTopClaims = topClaims
+            .distinctBy { normalizeText(it.statement) }
+            .take(5)
+
+        if (distinctTopClaims.isNotEmpty()) {
+            appendLine("# Key Findings:")
             appendLine()
-            topClaims.forEach { claim ->
+            distinctTopClaims.forEach { claim ->
                 appendLine("- ${claim.statement}")
             }
         } else {
@@ -93,78 +91,48 @@ class ReportGenerator(
         }
         
         appendLine()
-        appendLine("**Research Insights:**")
-        context.insights.take(5).forEach { insight ->
-            appendLine("- $insight")
-        }
-    }
-    
-    private fun StringBuilder.appendThematicAnalysis(context: ResearchContext) {
-        appendLine("## Thematic Analysis")
-        appendLine()
-        
-        // Group claims by similarity (simplified grouping by keywords)
-        val themes = groupClaimsByTheme(context.claims)
-        
-        if (themes.isEmpty()) {
-            appendLine("*Analysis in progress - more iterations needed for comprehensive thematic synthesis.*")
-            return
-        }
-        
-        themes.forEach { (themeName, claims) ->
-            appendLine("### $themeName")
-            appendLine()
-            claims.take(5).forEach { claim ->
-                val verificationBadge = when (claim.verificationStatus) {
-                    VerificationStatus.VERIFIED -> "✓ VERIFIED"
-                    VerificationStatus.LIKELY_TRUE -> "✓ Likely"
-                    VerificationStatus.CONFLICTING -> "⚠ Conflicting"
-                    VerificationStatus.LIKELY_FALSE -> "✗ Disputed"
-                    VerificationStatus.UNVERIFIED -> "? Unverified"
-                }
-                appendLine("**${verificationBadge}** | ${claim.statement}")
-                appendLine()
-                appendLine("*Source: ${claim.sourceUrl}*")
-                appendLine()
+        appendLine("# Research Insights:")
+        val keyFindingNorms = distinctTopClaims.map { normalizeText(it.statement) }.toSet()
+        val filteredInsights = context.insights
+            .map { stripInsightHeadings(it) }
+            .distinctBy { normalizeText(it) }
+            .filter { insight ->
+                val inNorm = normalizeText(insight)
+                keyFindingNorms.none { k -> areSimilarNormalized(k, inNorm) }
             }
-        }
+            .take(1)
+        filteredInsights.forEach { insight -> appendLine("- $insight") }
     }
     
     private fun StringBuilder.appendConsensusPoints(context: ResearchContext) {
         appendLine("## Consensus Points")
-        appendLine()
-        
-        val verifiedClaims = context.claims
-            .filter { it.verificationStatus == VerificationStatus.VERIFIED }
-        
-        if (verifiedClaims.isEmpty()) {
-            appendLine("*No strongly verified consensus points identified yet. More sources needed for cross-verification.*")
+        val top = selectTopClaims(context.claims, 10)
+        if (top.isEmpty()) {
+            appendLine("*No verified findings available yet.*")
             return
         }
-        
-        verifiedClaims.take(10).forEach { claim ->
-            appendLine("### ${claim.statement}")
-            appendLine()
-            appendLine("**Supporting Evidence:**")
-            claim.supportingEvidence.forEach { evidence ->
-                appendLine("- $evidence")
+        top.forEach { claim ->
+            val verificationBadge = when (claim.verificationStatus) {
+                VerificationStatus.VERIFIED -> "✓ VERIFIED"
+                VerificationStatus.LIKELY_TRUE -> "✓ Likely"
+                VerificationStatus.CONFLICTING -> "⚠ Conflicting"
+                VerificationStatus.LIKELY_FALSE -> "✗ Disputed"
+                VerificationStatus.UNVERIFIED -> "? Unverified"
             }
-            appendLine()
+            appendLine("- ${verificationBadge} | ${claim.statement} (Source: ${claim.sourceUrl})")
         }
     }
     
     private fun StringBuilder.appendContradictions(contradictions: List<Contradiction>) {
         appendLine("## Contradictions and Debates")
-        appendLine()
         
         if (contradictions.isEmpty()) {
             appendLine("*No major contradictions identified across sources.*")
             return
         }
         
-        contradictions.take(5).forEach { contradiction ->
+        contradictions.take(3).forEach { contradiction ->
             appendLine("### Contradiction Identified")
-            appendLine()
             appendLine("**Position A:**")
             appendLine("> ${contradiction.claim1.statement}")
             appendLine()
@@ -177,8 +145,6 @@ class ReportGenerator(
             appendLine()
             appendLine("**Analysis:**")
             appendLine(contradiction.analysis)
-            appendLine()
-            appendLine("---")
             appendLine()
         }
     }
@@ -223,32 +189,60 @@ class ReportGenerator(
     
     private fun StringBuilder.appendResearchMetrics(metrics: ResearchMetrics) {
         appendLine("## Research Metrics")
-        appendLine()
-        appendLine("| Metric | Value |")
-        appendLine("|--------|-------|")
-        appendLine("| Total Duration | ${formatDuration(metrics.totalDurationMs)} |")
-        appendLine("| Iterations | ${metrics.iterations} |")
-        appendLine("| Total Queries | ${metrics.totalQueries} |")
-        appendLine("| Sources Evaluated | ${metrics.sourcesEvaluated} |")
-        appendLine("| Sources Used | ${metrics.sourcesUsed} |")
-        appendLine("| Claims Extracted | ${metrics.claimsExtracted} |")
-        appendLine("| Claims Verified | ${metrics.claimsVerified} |")
-        appendLine("| Avg Source Credibility | ${(metrics.averageSourceCredibility * 100).toInt()}% |")
-        appendLine("| Overall Confidence | ${(metrics.overallConfidenceScore * 100).toInt()}% |")
+        appendLine("- **Verified Claims**: ${metrics.claimsVerified}")
+        appendLine("- **Claims Extracted**: ${metrics.claimsExtracted}")
+        appendLine("- **Avg Source Credibility**: ${(metrics.averageSourceCredibility * 100).toInt()}%")
+        appendLine("- **Sources Used**: ${metrics.sourcesUsed} / ${metrics.sourcesEvaluated}")
+        appendLine("- **Iterations**: ${metrics.iterations}")
+        appendLine("- **Total Duration**: ${formatDuration(metrics.totalDurationMs)}")
     }
     
+    private fun normalizeUrl(raw: String): String {
+        return try {
+            val uri = java.net.URI(raw)
+            val scheme = uri.scheme?.lowercase() ?: "http"
+            var host = uri.host?.lowercase() ?: uri.authority?.lowercase() ?: ""
+            if (host.startsWith("www.")) host = host.removePrefix("www.")
+            val path = (uri.path ?: "").trimEnd('/')
+            if (host.isEmpty()) raw.trim().lowercase().removePrefix("www.").trimEnd('/') else "$scheme://$host$path"
+        } catch (e: Exception) {
+            raw.trim().lowercase().removePrefix("www.").trimEnd('/')
+        }
+    }
+
+    private fun stripInsightHeadings(text: String): String {
+        val withoutHashes = text.replace(Regex("^\\s*#{3,}\\s*"), "")
+        val withoutNumbering = withoutHashes.replace(Regex("^\\s*(?:\\(?\\d+\\)?|\\d+[.)])\\s*"), "")
+        val withoutBullets = withoutNumbering.replace(Regex("^\\s*[-*+]\\s+"), "")
+        return withoutBullets.trim()
+    }
+
+    private fun normalizeText(input: String): String {
+        return input
+            .lowercase()
+            .trim()
+            .replace(Regex("[^\\p{L}\\p{N}\\s]"), "")
+            .replace(Regex("\\s+"), " ")
+    }
+
+    private fun areSimilarNormalized(aNorm: String, bNorm: String): Boolean {
+        if (aNorm == bNorm) return true
+        // Consider long substring containment as similar
+        if (aNorm.length >= 20 && bNorm.contains(aNorm)) return true
+        if (bNorm.length >= 20 && aNorm.contains(bNorm)) return true
+        return false
+    }
+
     private fun StringBuilder.appendSourceList(sources: List<Source>) {
         appendLine("## Sources")
-        appendLine()
-        appendLine("*Sources ranked by credibility score:*")
-        appendLine()
         
         sources
             .sortedByDescending { it.credibilityScore.overall }
+            .distinctBy { normalizeUrl(it.url) }
+            .take(5)
             .forEach { source ->
                 val credibilityPercent = (source.credibilityScore.overall * 100).toInt()
                 appendLine("### ${source.title}")
-                appendLine()
                 appendLine("- **URL:** ${source.url}")
                 appendLine("- **Credibility Score:** $credibilityPercent%")
                 appendLine("  - Authority: ${(source.credibilityScore.authority * 100).toInt()}%")
@@ -260,15 +254,6 @@ class ReportGenerator(
                 appendLine("- **Claims Extracted:** ${source.extractedClaims.size}")
                 appendLine()
             }
-    }
-    
-    private fun StringBuilder.appendFooter() {
-        appendLine("---")
-        appendLine()
-        appendLine("*Report generated by Deep Research Agent*")
-        appendLine()
-        appendLine("**Methodology:** Multi-iteration research with source evaluation, claim extraction, " +
-                   "cross-verification, and thematic synthesis.")
     }
     
     /**
@@ -310,7 +295,31 @@ class ReportGenerator(
     }
     
     /**
-     * Format duration in human-readable format.
+     * Select claims prioritizing VERIFIED, then LIKELY_TRUE, then others by confidence.
+     */
+    private fun selectTopClaims(claims: List<Claim>, limit: Int): List<Claim> {
+        if (claims.isEmpty() || limit <= 0) return emptyList()
+        val verified = claims
+            .filter { it.verificationStatus == VerificationStatus.VERIFIED }
+            .sortedByDescending { it.confidence }
+        if (verified.size >= limit) return verified.take(limit)
+        val likely = claims
+            .filter { it.verificationStatus == VerificationStatus.LIKELY_TRUE }
+            .sortedByDescending { it.confidence }
+            .filter { it !in verified }
+        val combined = (verified + likely).let { selected ->
+            if (selected.size >= limit) return selected.take(limit)
+            val others = claims
+                .filter { it.verificationStatus != VerificationStatus.VERIFIED && it.verificationStatus != VerificationStatus.LIKELY_TRUE }
+                .sortedByDescending { it.confidence }
+                .filter { it !in selected }
+            (selected + others).take(limit)
+        }
+        return combined
+    }
+    
+    /**
+     * Format duration in readable format.
      */
     private fun formatDuration(ms: Long): String {
         val seconds = ms / 1000

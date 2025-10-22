@@ -89,11 +89,6 @@ class SourceEvaluator {
                 score += 0.2
             }
             
-            // Wikipedia bonus (good for overview, but not primary source)
-            if (domain.contains("wikipedia.org")) {
-                score += 0.15
-            }
-            
             score.coerceIn(0.0, 1.0)
         } catch (e: Exception) {
             logger.warn { "Failed to parse URL for authority calculation: $url" }
@@ -103,15 +98,13 @@ class SourceEvaluator {
     
     /**
      * Calculate recency score based on publication date.
-     * More recent = higher score, with exponential decay.
      */
     private fun calculateRecency(publishedDate: Instant?): Double {
-        if (publishedDate == null) return 0.5 // Unknown date gets neutral score
+        if (publishedDate == null) return 0.5 
         
         val now = Instant.now()
         val daysSincePublication = ChronoUnit.DAYS.between(publishedDate, now)
         
-        // Exponential decay: 1.0 for today, 0.5 at 180 days, approaches 0 after that
         val halfLifeDays = 180.0
         val score = exp(-daysSincePublication / halfLifeDays)
         
@@ -147,12 +140,11 @@ class SourceEvaluator {
     
     /**
      * Calculate how much this source adds diversity to existing sources.
-     * Measures vocabulary uniqueness and perspective novelty.
      */
     private fun calculateDiversity(content: String, existingContents: List<String>): Double {
         if (existingContents.isEmpty()) return 1.0
         
-        // Extract significant words (> 4 characters)
+        // Extract significant words 
         val sourceWords = extractSignificantWords(content)
         
         // Calculate overlap with existing sources
@@ -169,12 +161,11 @@ class SourceEvaluator {
     
     /**
      * Calculate coherence with existing sources.
-     * High coherence means claims align with other sources.
      */
     private fun calculateCoherence(content: String, existingContents: List<String>): Double {
-        if (existingContents.isEmpty()) return 0.5 // Neutral for first source
+        if (existingContents.isEmpty()) return 0.5 
         
-        // Simplified coherence: check keyword overlap
+        // check keyword overlap
         val sourceWords = extractSignificantWords(content)
         val existingWords = existingContents
             .flatMap { extractSignificantWords(it) }
@@ -184,7 +175,6 @@ class SourceEvaluator {
         val coherenceRatio = if (sourceWords.isEmpty()) 0.0
                             else commonWords.size.toDouble() / sourceWords.size
         
-        // High overlap = high coherence
         return coherenceRatio.coerceIn(0.0, 1.0)
     }
     

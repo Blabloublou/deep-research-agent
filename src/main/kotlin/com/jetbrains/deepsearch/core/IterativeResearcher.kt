@@ -152,7 +152,6 @@ class IterativeResearcher(
             }
         }.awaitAll().filterNotNull()
 
-        logger.info { "Processed ${sources.size} credible sources from query" }
         sources
     }
 

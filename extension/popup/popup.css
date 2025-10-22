@@ -203,6 +203,7 @@ select {
     overflow: hidden;
     padding-bottom: 40px;
     box-sizing: border-box;
+    background: #fafafa;
 }
 
 .progress-header {

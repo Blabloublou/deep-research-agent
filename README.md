@@ -51,3 +51,26 @@ Simplified flow:
 7. `IterativeResearcher` iterates; `OpenAIClient` synthesizes
 8. `ReportGenerator` produces a Markdown report under `research_reports/`
 9. API exposes status/results and streams updates via WebSocket
+
+---
+
+## Browser extension (Chrome side panel)
+
+An optional Chrome MV3 side panel extension lets you start research, monitor progress in real time, and browse saved reports directly from the browser. It connects to the local API.
+
+### Install
+- Start the backend first: `docker compose up -d --build`
+- In Chrome: open `chrome://extensions`, enable Developer mode, click “Load unpacked”, and select the `extension/` folder
+- Click the extension icon to open the side panel
+
+### Usage
+- The top status shows backend connectivity (`/api/health`)
+- Pick or create an Agent (name, model, optional params)
+- Enter a topic and click “Start research”
+- Progress updates stream live; when finished, you get a Markdown preview and can view past reports per agent
+
+### Connectivity & permissions
+- API base: `http://127.0.0.1:8080`
+- WebSocket: `ws://127.0.0.1:8080/api/research/{id}/stream`
+- Endpoints used: `/api/health`, `/api/agents` (GET/POST/PUT/DELETE), `/api/research` (POST), `/api/agents/{id}/reports` (GET), `/api/reports/{id}` (GET)
+- Extension permissions: `storage`, `sidePanel`; host permissions for `http://localhost:8080/*` and `http://127.0.0.1:8080/*`
