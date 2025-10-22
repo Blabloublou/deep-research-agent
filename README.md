@@ -73,4 +73,4 @@ An optional Chrome MV3 side panel extension lets you start research, monitor pro
 - API base: `http://127.0.0.1:8080`
 - WebSocket: `ws://127.0.0.1:8080/api/research/{id}/stream`
 - Endpoints used: `/api/health`, `/api/agents` (GET/POST/PUT/DELETE), `/api/research` (POST), `/api/agents/{id}/reports` (GET), `/api/reports/{id}` (GET)
-- Extension permissions: `storage`, `sidePanel`; host permissions for `http://localhost:8080/*` and `http://127.0.0.1:8080/*`
+- Extension permissions: `storage`, `sidePanel`; host permissions for `http://localhost:8080/*`
