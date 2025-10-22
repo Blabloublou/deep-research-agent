@@ -7,6 +7,7 @@
 - Summarizes the top N results
 - Stops after one pass
 
+**Deep Research Agent:**
 The agent implements a **progressive research strategy** where each iteration builds on the previous one:
 - Iteration 1: Broad overview and foundational understanding
 - Iteration 2+: Targeted queries addressing identified gaps, contradictions, and underexplored areas
@@ -17,9 +18,9 @@ The agent implements a **progressive research strategy** where each iteration bu
 - Uses sources at face value
 - No quality filtering
 
-**This Deep Research Agent:**
+**Deep Research Agent:**
 ```kotlin
-// From SourceEvaluator.kt - 5 dimensions
+// From SourceEvaluator.kt
 class CredibilityScore {
     authority: 0.0-1.0      // Domain reputation, TLD, academic/news credentials
     recency: 0.0-1.0        // Exponential decay (180-day half-life)
@@ -30,8 +31,8 @@ class CredibilityScore {
 ```
 
 The credibility system:
-- **Academic sources** (arxiv.org, pubmed, IEEE) receive +0.4 authority boost
-- **Trusted news** (Reuters, AP, BBC) receive +0.3 boost
+- **Academic sources** receive +0.4 authority boost
+- **Trusted news** receive +0.3 boost
 - **Recency calculation** uses exponential decay to value fresh information
 - **Objectivity detection** flags bias keywords ("shocking", "unbelievable", "miracle")
 - **Diversity scoring** rewards sources that introduce new vocabulary
@@ -45,7 +46,7 @@ Minimum credibility threshold (default 0.5) filters low-quality sources.
 - Treats content as unstructured text
 - No fact verification
 
-**This Deep Research Agent:**
+**Deep Research Agent:**
 ```kotlin
 // From ClaimExtractor.kt and CrossChecker.kt
 1. Extract structured claims from each source
@@ -72,7 +73,7 @@ The cross-verification system builds an **evidence graph** where claims are conn
 - No awareness of what it doesn't know
 - Cannot detect missing information
 
-**This Deep Research Agent:**
+**Deep Research Agent:**
 ```kotlin
 // From IterativeResearcher.identifyGaps()
 Automatically identifies:
@@ -85,17 +86,9 @@ Automatically identifies:
 
 This **metacognitive capability** allows the agent to recognize its own knowledge limitations and actively seek to fill them in subsequent iterations.
 
-### 5. **Synthesis Across Sources and Time**
-
-The report generation doesn't just summarize—it **synthesizes** by:
-- Finding patterns across sources
-- Identifying areas of agreement and disagreement
-- Providing nuanced analysis of contradictions
-- Tracking the evolution of understanding through the research process
-
 ## Question 2: How would you approach measuring the quality and effectiveness of this research agent?
 
-#### 1. Claim Verification Accuracy
+#### 1. **Claim Verification Accuracy**
 ```
 Method:
 1. Create benchmark dataset of research topics with known ground truth
@@ -110,7 +103,7 @@ Metrics:
 - False negative rate: True claims marked UNVERIFIED/CONFLICTING
 ```
 
-#### 2. Source Quality Assessment
+#### 2. **Source Quality Assessment**
 ```
 Method:
 - Expert evaluation of source credibility scores
@@ -122,7 +115,7 @@ Metrics:
 - Precision@K: Are top-K highest-scored sources truly most credible?
 ```
 
-#### 3. Knowledge Coverage
+#### 3. **Knowledge Coverage**
 ```
 Method:
 1. Domain experts create comprehensive outlines for test topics
@@ -136,7 +129,7 @@ Metrics:
 - Diminishing returns: Do later iterations add substantial new information?
 ```
 
-#### 4. Iteration Effectiveness
+#### 4. **Iteration Effectiveness**
 ```
 Method:
 - Track unique information gain per iteration
@@ -148,7 +141,7 @@ Metrics:
 - Convergence rate: Iterations until 90% of discoverable facts found
 ```
 
-#### 5. Resource Efficiency
+#### 5. **Resource Efficiency**
 ```
 Metrics:
 - Time to completion
@@ -172,12 +165,6 @@ From HtmlContentExtractor and SearchClient
 - PDF extraction not implemented
 - No academic database API integration
 
-**Failure Symptoms:**
-- Low credibility sources (secondary news articles instead of primary research)
-- Incomplete claim extraction (only abstracts, not full findings)
-
-**Impact Severity:** **HIGH** - Core mission failure for academic/scientific research
-
 ### 2. **Real-Time Events and Breaking News**
 
 **Scenario:**
@@ -187,47 +174,24 @@ From HtmlContentExtractor and SearchClient
 ```kotlin
 // From SourceEvaluator.calculateRecency()
 - Recency scoring uses exponential decay with 180-day half-life
-- Good for distinguishing 2025 vs. 2020 content
 - Ineffective for distinguishing 2 hours vs. 4 hours ago
 - No real-time news API integration
 - Brave Search may not have indexed very recent content
 - No social media or live feed integration
 ```
 
-**Additional Issues:**
-- High claim conflict rate (early reports contradictory)
-- Sources haven't been vetted for credibility yet
-- CrossChecker may struggle with rapidly changing information
-- Report might be outdated by the time it's generated
-
-**Impact Severity:** **MEDIUM-HIGH** - Produces outdated or incomplete information
-
----
-
 ### 3. **Highly Niche or Non-English Topics**
 
 **Scenario:**
-> Research topic: "Comparison of Bulgarian folk music modal systems with Turkish makam theory"
+> Research topic: "What was the technique used by Teddy Riner to win his last fight?"
 
 **Why It Fails:**
 ```kotlin
 // Multiple failure points:
 1. Sparse search results - Brave may return < 5 relevant sources
 2. SourceEvaluator.calculateDiversity() - first source gets 1.0, rest get ~0.1
-3. No non-English content handling
-4. OpenAI prompts in English - claim extraction may miss context
-5. Gap identification: "Limited source diversity" but truly sparse domain
+3. Gap identification: "Limited source diversity" but truly sparse domain
 ```
-
-**Failure Symptoms:**
-- Terminates with insufficient sources (< min credibility threshold)
-- Heavy reliance on Wikipedia (only discoverable source)
-- Claim extraction from Wikipedia violates "not primary source" principle
-- Report filled with "unverified" claims due to lack of corroboration
-
-**Impact Severity:** **HIGH** - Cannot complete research adequately
-
----
 
 ### 4. **Adversarial or Misinformation-Heavy Topics**
 
@@ -241,19 +205,7 @@ From HtmlContentExtractor and SearchClient
 - Anti-vax sites avoid obvious bias words, use pseudo-scientific language
 - Authority scoring: Some misinformation sites use .org domains
 - CrossChecker may find "consensus" among misinformation sources
-- No fact-checking database integration
 ```
-
-**Dangerous Outcomes:**
-- May present misinformation as "conflicting evidence"
-- False balance: Treats fringe theories equally with scientific consensus
-- Verification status misleading: Multiple anti-vax sites "verify" false claims
-- Report legitimizes misinformation through neutral presentation
-
-**Impact Severity:** **CRITICAL** - Ethical failure, potential harm
-
----
-
 
 ### 6. **Computational or Mathematical Research**
 
@@ -265,58 +217,21 @@ From HtmlContentExtractor and SearchClient
 // Mathematical limitations:
 - Cannot parse LaTeX mathematical notation
 - Cannot verify mathematical proofs
-- Claim extraction from arXiv papers misses key equations
 - Synthesis requires mathematical reasoning, not just text similarity
 - No symbolic computation capability
 ```
 
-**Failure Symptoms:**
-- Extracts superficial claims ("researchers made progress")
-- Misses technical substance (what specifically was proven?)
-- Cannot identify valid vs. flawed proofs
-- Report lacks mathematical rigor
-
-**Impact Severity:** **HIGH** - Inadequate for technical/mathematical domains
-
-
-
-### 8. **Simple Factual Lookups**
+### 7. **Simple Factual Lookups**
 
 **Scenario:**
 > Research topic: "What is the capital of France?"
 
 **Why It's Inefficient:**
-```kotlin
-// Overkill problem:
+
 - 3 iterations with 2-3 queries each = 6-9 searches
 - Claim extraction, cross-verification on obvious fact
 - Answer available in microseconds from knowledge graph
 - Multi-minute research for one-word answer
-```
-
-**Outcome:**
-- Correct answer but terrible efficiency
-- 1000x more expensive than needed
-- User frustration at wait time
-
-**Impact Severity:** **LOW** - Works but wasteful
-
----
-
-### Summary
-
-| Failure Mode | Root Cause | Detection Method |
-|--------------|------------|------------------|
-| **Content Accessibility** | Paywalls, PDFs, non-HTML | Few sources found, low credibility |
-| **Domain Sparsity** | Niche topics, non-English | Diversity scores drop, gaps persist |
-| **Misinformation** | Adversarial content | False verification consensus |
-| **Multimodal Needs** | Images, videos, charts | Text descriptions inadequate |
-| **Formal Systems** | Math, code, logic | Cannot parse or verify formal notation |
-| **Philosophical** | No objective truth | Infinite gap expansion |
-| **Real-time** | Content not indexed | Outdated information |
-| **Overkill** | Simple factual queries | Efficiency metrics terrible |
-
----
 
 ## Question 4: What features or capabilities would you add to enhance your agent and make it work better?
 
@@ -508,6 +423,3 @@ class RealTimeResearcher(
 - Captures public sentiment and discussion
 - Early signal detection for emerging stories
 - Complements traditional sources with real-time feeds
-
-**Caution:** Social media requires extra misinformation vigilance
-
