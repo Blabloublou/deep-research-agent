@@ -69,7 +69,8 @@ document.addEventListener('DOMContentLoaded', () => {
     deleteAgentBtn.addEventListener('click', deleteCurrentAgent);
     viewReportsBtn.addEventListener('click', viewAgentReports);
     refreshBtn.addEventListener('click', manualRefreshConnection);
-    
+    newSearchBtn.addEventListener('click', resetUI);
+
     // Modal controls
     closeModal.addEventListener('click', closeAgentModal);
     cancelAgent.addEventListener('click', closeAgentModal);
