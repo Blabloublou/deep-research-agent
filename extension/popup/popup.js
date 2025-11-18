@@ -56,7 +56,6 @@ const newSearchBtn = document.getElementById('newSearchBtn');
 
 const errorSection = document.getElementById('errorSection');
 const errorText = document.getElementById('errorText');
-const retryBtn = document.getElementById('retryBtn');
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
@@ -69,8 +68,6 @@ document.addEventListener('DOMContentLoaded', () => {
     editAgentBtn.addEventListener('click', editCurrentAgent);
     deleteAgentBtn.addEventListener('click', deleteCurrentAgent);
     viewReportsBtn.addEventListener('click', viewAgentReports);
-    newSearchBtn.addEventListener('click', resetUI);
-    retryBtn.addEventListener('click', resetUI);
     refreshBtn.addEventListener('click', manualRefreshConnection);
     
     // Modal controls
@@ -587,7 +584,7 @@ function showProgressSection() {
     progressSection.style.display = 'block';
     errorSection.style.display = 'none';
     resultsSection.style.display = 'none';
-    metrics.style.display = 'grid';
+    metrics.style.display = 'none';
 }
 
 // Show report
