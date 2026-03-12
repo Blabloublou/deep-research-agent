@@ -34,8 +34,8 @@ docker compose up -d --build
 
 ## How it works
 Main modules:
-- `src/main/kotlin/com/jetbrains/deepsearch/api/` → Ktor server, HTTP/WS routes
-- `src/main/kotlin/com/jetbrains/deepsearch/` → orchestration (`DeepResearchAgent`, `Main.kt`)
+- `src/main/kotlin/com/core/deepsearch/api/` → Ktor server, HTTP/WS routes
+- `src/main/kotlin/com/core/deepsearch/` → orchestration (`DeepResearchAgent`, `Main.kt`)
 - `clients/` → OpenAI, Brave, and HTML extraction
 - `core/` → planning and iteration loop (`ResearchPlanner`, `IterativeResearcher`)
 - `eval/` → source evaluation, claim extraction, cross‑checking
