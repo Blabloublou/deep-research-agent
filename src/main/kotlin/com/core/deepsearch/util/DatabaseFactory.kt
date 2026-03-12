@@ -1,7 +1,7 @@
-package com.jetbrains.deepsearch.util
+package com.core.deepsearch.util
 
-import com.jetbrains.deepsearch.db.tables.AgentsTable
-import com.jetbrains.deepsearch.db.tables.ReportsTable
+import com.core.deepsearch.db.tables.AgentsTable
+import com.core.deepsearch.db.tables.ReportsTable
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction

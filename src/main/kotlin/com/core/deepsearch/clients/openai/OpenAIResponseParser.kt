@@ -1,7 +1,7 @@
-package com.jetbrains.deepsearch.clients.openai
+package com.core.deepsearch.clients.openai
 
-import com.jetbrains.deepsearch.model.OpenAIErrorResponse
-import com.jetbrains.deepsearch.model.OpenAIResponse
+import com.core.deepsearch.model.OpenAIErrorResponse
+import com.core.deepsearch.model.OpenAIResponse
 import kotlinx.serialization.json.*
 import mu.KotlinLogging
 

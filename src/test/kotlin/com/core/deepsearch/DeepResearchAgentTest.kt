@@ -1,6 +1,6 @@
-package com.jetbrains.deepsearch
+package com.core.deepsearch
 
-import com.jetbrains.deepsearch.util.ConfigLoader
+import com.core.deepsearch.util.ConfigLoader
 import io.mockk.*
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.AfterEach

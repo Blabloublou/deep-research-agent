@@ -1,4 +1,4 @@
-package com.jetbrains.deepsearch.db.tables
+package com.core.deepsearch.db.tables
 
 import org.jetbrains.exposed.dao.id.LongIdTable
 

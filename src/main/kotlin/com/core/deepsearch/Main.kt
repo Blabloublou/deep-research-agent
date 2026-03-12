@@ -1,6 +1,6 @@
-package com.jetbrains.deepsearch
+package com.core.deepsearch
 
-import com.jetbrains.deepsearch.api.startApiServer
+import com.core.deepsearch.api.startApiServer
 import mu.KotlinLogging
 
 private val logger = KotlinLogging.logger {}

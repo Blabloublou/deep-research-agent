@@ -1,8 +1,8 @@
-package com.jetbrains.deepsearch.eval
+package com.core.deepsearch.eval
 
-import com.jetbrains.deepsearch.clients.openai.OpenAIClient
-import com.jetbrains.deepsearch.model.Claim
-import com.jetbrains.deepsearch.model.VerificationStatus
+import com.core.deepsearch.clients.openai.OpenAIClient
+import com.core.deepsearch.model.Claim
+import com.core.deepsearch.model.VerificationStatus
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import mu.KotlinLogging

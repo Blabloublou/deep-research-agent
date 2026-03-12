@@ -1,4 +1,4 @@
-package com.jetbrains.deepsearch.model.api
+package com.core.deepsearch.model.api
 
 import kotlinx.serialization.Serializable
 

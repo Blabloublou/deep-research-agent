@@ -1,7 +1,7 @@
-package com.jetbrains.deepsearch.db.repositories
+package com.core.deepsearch.db.repositories
 
-import com.jetbrains.deepsearch.db.entities.ReportEntity
-import com.jetbrains.deepsearch.db.tables.ReportsTable
+import com.core.deepsearch.db.entities.ReportEntity
+import com.core.deepsearch.db.tables.ReportsTable
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction

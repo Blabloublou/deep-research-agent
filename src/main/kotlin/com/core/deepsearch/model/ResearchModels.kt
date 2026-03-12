@@ -1,4 +1,4 @@
-package com.jetbrains.deepsearch.model
+package com.core.deepsearch.model
 
 /**
  * Represents a research plan with progressive queries.

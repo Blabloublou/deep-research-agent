@@ -1,15 +1,15 @@
-package com.jetbrains.deepsearch
+package com.core.deepsearch
 
-import com.jetbrains.deepsearch.clients.openai.OpenAIClient
-import com.jetbrains.deepsearch.clients.SearchClient
-import com.jetbrains.deepsearch.core.IterativeResearcher
-import com.jetbrains.deepsearch.core.ResearchPlanner
-import com.jetbrains.deepsearch.eval.ClaimExtractor
-import com.jetbrains.deepsearch.eval.CrossChecker
-import com.jetbrains.deepsearch.eval.SourceEvaluator
-import com.jetbrains.deepsearch.report.ReportGenerator
-import com.jetbrains.deepsearch.util.ConfigLoader
-import com.jetbrains.deepsearch.util.HttpClientFactory
+import com.core.deepsearch.clients.openai.OpenAIClient
+import com.core.deepsearch.clients.SearchClient
+import com.core.deepsearch.core.IterativeResearcher
+import com.core.deepsearch.core.ResearchPlanner
+import com.core.deepsearch.eval.ClaimExtractor
+import com.core.deepsearch.eval.CrossChecker
+import com.core.deepsearch.eval.SourceEvaluator
+import com.core.deepsearch.report.ReportGenerator
+import com.core.deepsearch.util.ConfigLoader
+import com.core.deepsearch.util.HttpClientFactory
 import io.ktor.client.*
 import kotlinx.coroutines.runBlocking
 import mu.KotlinLogging

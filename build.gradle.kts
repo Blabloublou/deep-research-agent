@@ -4,7 +4,7 @@ plugins {
     application
 }
 
-group = "com.jetbrains"
+group = "com.core"
 version = "1.0.0"
 
 repositories {
@@ -63,12 +63,12 @@ kotlin {
 }
 
 application {
-    mainClass.set("com.jetbrains.deepsearch.MainKt")
+    mainClass.set("com.core.deepsearch.MainKt")
 }
 
 tasks.withType<Jar> {
     manifest {
-        attributes["Main-Class"] = "com.jetbrains.deepsearch.MainKt"
+        attributes["Main-Class"] = "com.core.deepsearch.MainKt"
     }
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })

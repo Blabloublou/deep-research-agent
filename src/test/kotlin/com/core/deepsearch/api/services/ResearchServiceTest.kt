@@ -1,7 +1,7 @@
-package com.jetbrains.deepsearch.api.services
+package com.core.deepsearch.api.services
 
-import com.jetbrains.deepsearch.DeepResearchAgent
-import com.jetbrains.deepsearch.model.api.*
+import com.core.deepsearch.DeepResearchAgent
+import com.core.deepsearch.model.api.*
 import io.mockk.*
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.AfterEach

@@ -1,11 +1,11 @@
-package com.jetbrains.deepsearch.core
+package com.core.deepsearch.core
 
-import com.jetbrains.deepsearch.clients.openai.OpenAIClient
-import com.jetbrains.deepsearch.clients.SearchClient
-import com.jetbrains.deepsearch.eval.ClaimExtractor
-import com.jetbrains.deepsearch.eval.CrossChecker
-import com.jetbrains.deepsearch.eval.SourceEvaluator
-import com.jetbrains.deepsearch.model.*
+import com.core.deepsearch.clients.openai.OpenAIClient
+import com.core.deepsearch.clients.SearchClient
+import com.core.deepsearch.eval.ClaimExtractor
+import com.core.deepsearch.eval.CrossChecker
+import com.core.deepsearch.eval.SourceEvaluator
+import com.core.deepsearch.model.*
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope

@@ -1,7 +1,7 @@
-package com.jetbrains.deepsearch.api.routes
+package com.core.deepsearch.api.routes
 
-import com.jetbrains.deepsearch.api.services.AgentService
-import com.jetbrains.deepsearch.model.api.*
+import com.core.deepsearch.api.services.AgentService
+import com.core.deepsearch.model.api.*
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*

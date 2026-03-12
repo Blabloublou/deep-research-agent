@@ -1,4 +1,4 @@
-package com.jetbrains.deepsearch.util
+package com.core.deepsearch.util
 
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*

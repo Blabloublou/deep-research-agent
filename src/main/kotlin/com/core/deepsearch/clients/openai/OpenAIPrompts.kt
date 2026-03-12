@@ -1,6 +1,6 @@
-package com.jetbrains.deepsearch.clients.openai
+package com.core.deepsearch.clients.openai
 
-import com.jetbrains.deepsearch.model.Message
+import com.core.deepsearch.model.Message
 
 /**
  * Centralized OpenAI prompts for research operations.

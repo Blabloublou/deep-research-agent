@@ -1,9 +1,9 @@
-package com.jetbrains.deepsearch.api.services
+package com.core.deepsearch.api.services
 
-import com.jetbrains.deepsearch.DeepResearchAgent
-import com.jetbrains.deepsearch.db.repositories.ReportRepository
-import com.jetbrains.deepsearch.db.repositories.AgentRepository
-import com.jetbrains.deepsearch.model.api.*
+import com.core.deepsearch.DeepResearchAgent
+import com.core.deepsearch.db.repositories.ReportRepository
+import com.core.deepsearch.db.repositories.AgentRepository
+import com.core.deepsearch.model.api.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob

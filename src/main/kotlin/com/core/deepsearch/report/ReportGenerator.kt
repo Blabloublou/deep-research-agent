@@ -1,8 +1,8 @@
-package com.jetbrains.deepsearch.report
+package com.core.deepsearch.report
 
-import com.jetbrains.deepsearch.clients.openai.OpenAIClient
-import com.jetbrains.deepsearch.eval.CrossChecker
-import com.jetbrains.deepsearch.model.*
+import com.core.deepsearch.clients.openai.OpenAIClient
+import com.core.deepsearch.eval.CrossChecker
+import com.core.deepsearch.model.*
 import java.io.File
 import java.time.Instant
 import java.time.ZoneId

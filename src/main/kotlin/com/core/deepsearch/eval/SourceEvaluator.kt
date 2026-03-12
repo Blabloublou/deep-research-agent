@@ -1,7 +1,7 @@
-package com.jetbrains.deepsearch.eval
+package com.core.deepsearch.eval
 
-import com.jetbrains.deepsearch.model.CredibilityScore
-import com.jetbrains.deepsearch.model.Source
+import com.core.deepsearch.model.CredibilityScore
+import com.core.deepsearch.model.Source
 import mu.KotlinLogging
 import java.net.URL
 import java.time.Instant
@@ -44,7 +44,7 @@ class SourceEvaluator {
      * Evaluate the credibility of a source.
      */
     fun evaluateSource(
-        searchResult: com.jetbrains.deepsearch.model.SearchResult,
+        searchResult: com.core.deepsearch.model.SearchResult,
         content: String,
         existingContents: List<String>,
         publishedDate: Instant?

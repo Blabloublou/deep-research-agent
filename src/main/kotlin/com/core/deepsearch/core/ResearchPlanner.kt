@@ -1,8 +1,8 @@
-package com.jetbrains.deepsearch.core
+package com.core.deepsearch.core
 
-import com.jetbrains.deepsearch.clients.openai.OpenAIClient
-import com.jetbrains.deepsearch.model.ResearchPlan
-import com.jetbrains.deepsearch.model.ResearchQuery
+import com.core.deepsearch.clients.openai.OpenAIClient
+import com.core.deepsearch.model.ResearchPlan
+import com.core.deepsearch.model.ResearchQuery
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import mu.KotlinLogging
@@ -68,8 +68,8 @@ class ResearchPlanner(private val openAIClient: OpenAIClient) {
 
         val response = openAIClient.chatCompletion(
             messages = listOf(
-                com.jetbrains.deepsearch.model.Message("system", "You are an expert research strategist."),
-                com.jetbrains.deepsearch.model.Message("user", refinementPrompt)
+                com.core.deepsearch.model.Message("system", "You are an expert research strategist."),
+                com.core.deepsearch.model.Message("user", refinementPrompt)
             ),
             temperature = 0.8
         )

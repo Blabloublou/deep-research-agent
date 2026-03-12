@@ -1,4 +1,4 @@
-package com.jetbrains.deepsearch.util
+package com.core.deepsearch.util
 
 import mu.KotlinLogging
 import java.io.File

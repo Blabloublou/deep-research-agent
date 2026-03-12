@@ -1,12 +1,12 @@
-package com.jetbrains.deepsearch.api
+package com.core.deepsearch.api
 
-import com.jetbrains.deepsearch.DeepResearchAgent
-import com.jetbrains.deepsearch.api.routes.agentRoutes
-import com.jetbrains.deepsearch.api.routes.researchRoutes
-import com.jetbrains.deepsearch.api.services.AgentService
-import com.jetbrains.deepsearch.api.services.ResearchService
-import com.jetbrains.deepsearch.util.ConfigLoader
-import com.jetbrains.deepsearch.util.DatabaseFactory
+import com.core.deepsearch.DeepResearchAgent
+import com.core.deepsearch.api.routes.agentRoutes
+import com.core.deepsearch.api.routes.researchRoutes
+import com.core.deepsearch.api.services.AgentService
+import com.core.deepsearch.api.services.ResearchService
+import com.core.deepsearch.util.ConfigLoader
+import com.core.deepsearch.util.DatabaseFactory
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.cio.*

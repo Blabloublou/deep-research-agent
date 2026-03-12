@@ -1,4 +1,4 @@
-package com.jetbrains.deepsearch.clients.parsers
+package com.core.deepsearch.clients.parsers
 
 import io.ktor.client.*
 import io.ktor.client.request.*

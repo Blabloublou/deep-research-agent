@@ -1,4 +1,4 @@
-package com.jetbrains.deepsearch.clients.brave
+package com.core.deepsearch.clients.brave
 
 import kotlinx.serialization.Serializable
 

@@ -1,8 +1,8 @@
-package com.jetbrains.deepsearch.clients
+package com.core.deepsearch.clients
 
-import com.jetbrains.deepsearch.clients.brave.BraveSearchClient
-import com.jetbrains.deepsearch.clients.parsers.HtmlContentExtractor
-import com.jetbrains.deepsearch.model.SearchResult
+import com.core.deepsearch.clients.brave.BraveSearchClient
+import com.core.deepsearch.clients.parsers.HtmlContentExtractor
+import com.core.deepsearch.model.SearchResult
 import io.ktor.client.*
 
 class SearchClient(

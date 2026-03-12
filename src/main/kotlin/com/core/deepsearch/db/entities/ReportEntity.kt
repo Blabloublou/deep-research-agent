@@ -1,4 +1,4 @@
-package com.jetbrains.deepsearch.db.entities
+package com.core.deepsearch.db.entities
 
 data class ReportEntity(
     val id: Long,

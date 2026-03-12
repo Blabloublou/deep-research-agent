@@ -1,7 +1,7 @@
-package com.jetbrains.deepsearch.clients.openai
+package com.core.deepsearch.clients.openai
 
-import com.jetbrains.deepsearch.model.Message
-import com.jetbrains.deepsearch.model.OpenAIRequest
+import com.core.deepsearch.model.Message
+import com.core.deepsearch.model.OpenAIRequest
 import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*

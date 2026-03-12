@@ -1,6 +1,6 @@
-package com.jetbrains.deepsearch.clients.brave
+package com.core.deepsearch.clients.brave
 
-import com.jetbrains.deepsearch.model.SearchResult
+import com.core.deepsearch.model.SearchResult
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.*

@@ -1,9 +1,9 @@
-package com.jetbrains.deepsearch.api.services
+package com.core.deepsearch.api.services
 
-import com.jetbrains.deepsearch.db.entities.AgentEntity
-import com.jetbrains.deepsearch.db.entities.ReportEntity
-import com.jetbrains.deepsearch.db.repositories.AgentRepository
-import com.jetbrains.deepsearch.db.repositories.ReportRepository
+import com.core.deepsearch.db.entities.AgentEntity
+import com.core.deepsearch.db.entities.ReportEntity
+import com.core.deepsearch.db.repositories.AgentRepository
+import com.core.deepsearch.db.repositories.ReportRepository
 
 /**
  * Service to manage agent configurations and their reports.
